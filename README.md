@@ -1,21 +1,32 @@
-# TradeBot AI
+# TradeBot AI — Signal-Only Research Terminal
 
-AI-assisted, **signal-only** quantitative research and visual trading terminal.
+A first working codebase for a professional AI-ready charting and signal research platform. **No live trading, order execution, wallet custody or private keys.**
 
-> **Safety:** TradeBot AI is for research, charting, historical evaluation and simulated trading. It must not submit live exchange/broker orders, hold user funds or sign blockchain transactions.
+## Current features
+- FastAPI backend with **deterministic SYNTHETIC candles**, and SMA, EMA, RSI, ATR.
+- Illustrative (unvalidated) EMA + RSI signal with optional Entry/SL/TP levels using synthetic prices.
+- Next.js frontend using TradingView Lightweight Charts, candlesticks, EMA overlays and synthetic price lines.
+- Python unit/API tests and GitHub Actions workflow.
 
-## Status
+**Not yet implemented:** real-time feeds, historical decade ingestion, trainable ML/DL, backtesting engine, simulated wallet, timeframe optimisation, or trading platform plugins. These belong to future milestones.
 
-Initial repository bootstrap. A working vertical slice will be introduced through a pull request.
+## Run backend
+```bash
+cd apps/api
+python -m venv .venv
+# Activate the virtualenv for your shell, then:
+python -m pip install -e ".[test]"
+uvicorn tradebot.main:app --reload --port 8000
+python -m pytest -q
+```
 
-## Intended architecture
+## Run frontend
+```bash
+cd apps/web
+npm install
+npm run dev
+```
+Open http://localhost:3000. Optional: set `NEXT_PUBLIC_API_BASE_URL=http://localhost:8000` in your local shell.
 
-- **Web:** Next.js / TypeScript / TradingView Lightweight Charts.
-- **API:** Python / FastAPI with deterministic demo market data.
-- **Research:** Indicators, strategy registry, walk-forward validation, later ML/DL.
-- **Integrations:** Read-only market data and supported chart companion plugins.
-- **Execution:** Paper/simulated only.
-
-All example prices and signals must be clearly labelled as synthetic, never real-time market recommendations.
-
-See the forthcoming `docs/` and `AGENTS.md` for development instructions.
+## Important
+Do not use these synthetic price levels to place actual trades. The API has no order-placement capability. See [the roadmap](docs/ROADMAP.md) and [coding rules](AGENTS.md).
